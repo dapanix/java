@@ -1,58 +1,58 @@
-package EjsInicio.NuevosEjs.Daniel_Fernandez_ExProgramacion;
-
+package EjsInicio.NuevosEjs;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.Scanner;
 
-public class cuadradoMagico2 {
+public class cuadradoMagico2{
+
     public static void main(String[] args) {
-        Random ran = new Random();
+        //la logica que vamos a seguir la encontramos en el siguiente video https://youtu.be/HKjrhLoqei0?si=sPXSxZ7rZJdOrfEW
+        //nota: mi el video lo he visto hasta el minuto 10, NO he querido ver la explicacion para programarlo, tan solo la logica,
+        //por lo que muy probablemente haya diferencias y el codigo no sera lo mas optimo posible
+
         Scanner sc = new Scanner(System.in);
-        System.out.println("cual quieres que sea el maximo de las celdas: ");
-        int num = sc.nextInt();
-        int maximo = num-(2);
-        int[] array0 =new int[3];
-        int[] array1 =new int[3];
-        int[] array2 =new int[3];
-        int[][] arrayTotal ={array0, array1, array2};
+        System.out.println("tamaño del cuadrado (debe ser impar): ");
+        int tamano = sc.nextInt();
+        int cuenta=1;
+        int f=0;//fila
+        boolean pintado;
+        boolean operado;
+        int c=tamano/2;//columna
+        int[] array1 =new int[tamano];
+        int[] array2 =new int[tamano];
+        int[] array3 =new int[tamano];
+        int[][] arrays ={array1, array2, array3};
 
-        for (int i=0; i<3; i++) {
-            int acumulacion=0;
-            for (int j = 0; j < 3; j++) {
 
-                if (j==0){
-                    arrayTotal[i][0]= ran.nextInt(maximo);
+        for (int i=0;i<=tamano;i++){
+            for (int j=0;j<tamano;j++){
+                pintado=false;
+                operado=false;
+                if ((c>=0 && f>=0)){
+                    arrays[f][c]=cuenta;
+                    pintado=true;
                 }
-                if (j==2){
 
-                    arrayTotal[i][2]=num-acumulacion;
+                if ((c<0)){
+                    c=c+tamano;
                 }
-                if (j==1) {
-                    arrayTotal[i][1]= ran.nextInt(num-acumulacion);
+                else if ((f<0)){
+                    f=f+tamano;
                 }
-                acumulacion=arrayTotal[i][j]+acumulacion;
-
-
+                else if((cuenta%tamano==0)&&(cuenta!=0)){
+                    f=f+1;
+                }
+                else {
+                    f=f-1;
+                    c=c-1;
+                }
+                if (pintado){
+                    cuenta=cuenta+1;
+                }
             }
-
         }
-        for (int i=0; i<3; i++) {
-            int acumulacion=0;
-            for (int j = 0; j < 3; j++) {
-
-                if (j==2){
-                    while (num-acumulacion<0){
-                        arrayTotal[j][1]=ran.nextInt(num-acumulacion);
-                    }
-                    arrayTotal[j][2]=num-(num-arrayTotal[j][1]+num-arrayTotal[j][2]);
-                }
-                acumulacion=arrayTotal[j][i]+acumulacion;
-
-
-            }
-
-        }
-        }
-
+        System.out.println(Arrays.toString(array1));
+        System.out.println(Arrays.toString(array2));
+        System.out.println(Arrays.toString(array3));
 
     }
+}
