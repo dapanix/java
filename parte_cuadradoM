@@ -1,0 +1,26 @@
+for (int i=0; i<9; i++) {
+            cuadradoFinal[i] = new int[granCuadrado[i].length / 2];
+            for (int j = 0; j < granCuadrado[i].length/2; j++) {
+                cuadradoFinal[i][j] = granCuadrado[i][j];
+            }
+        }
+
+        for (int i=0; i<9; i++) {
+            int y=granCuadrado[i].length/2-1;
+            cuadradoFinal2[i] = new int[granCuadrado[i].length / 2];
+            for (int j = 0; j < granCuadrado[i].length/2; j++) {
+                y=y+1;
+                cuadradoFinal2[i][j] = granCuadrado[i][y];
+            }
+        }
+        for (int i=0;i<6;i++ ){
+            for (int j=0; j<3; j++){
+                if (i%2==0){
+                    System.out.print(Arrays.deepToString(cuadradoFinal[j]));
+                }
+                if (i%2!=0){
+                    System.out.print(Arrays.deepToString(cuadradoFinal2[j]));
+                }
+            }
+            System.out.println();
+        }
