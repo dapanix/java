@@ -1,0 +1,222 @@
+package EjsInicio.NuevosEjs;
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class CuadradoMagicoClase {
+    public static void main(String[] args) {
+        int z;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("tamaño del cuadrado (debe ser multiplo de 4): ");
+        int tamano = sc.nextInt();
+        int[] cuadradoTotal = new int[tamano * tamano];
+        int[] A = new int[tamano / 2];
+        int[] B = new int[tamano];
+        int[] C = new int[tamano / 2];
+        int[] D = new int[tamano];
+        int[] E = new int[tamano * 2];
+        int[] F = new int[tamano];
+        int[] G = new int[tamano / 2];
+        int[] H = new int[tamano];
+        int[] I = new int[tamano / 2];
+        int[] X1 = new int[tamano * 2];
+        int[] X2 = new int[tamano * 2];
+        int[] X3 = new int[tamano * 2];
+        int[] X4 = new int[tamano * 2];
+        int[][] Cuadradoarrays = {X1, X2, X3, X4};
+        for (int i = 0; i < tamano * tamano; i++) {
+            cuadradoTotal[i] = i + 1;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            int contador = 0;
+            for (int j = 0; j < tamano * 2; j++) {
+                if (i == 2 && j == 0) {
+                    contador = contador + tamano - (tamano / 4);
+                }
+                if (i != 3) {
+                    z = 0;
+                } else {
+                    z = tamano * tamano - tamano * 2;
+                }
+
+
+                if (i == 1 || i == 2) {
+                    Cuadradoarrays[i][j] = cuadradoTotal[contador];
+                    if ((j + 1) % 2 == 0) {
+                        contador += tamano - (tamano / 4);
+                    }
+                } else {
+                    Cuadradoarrays[i][j] = cuadradoTotal[j + z];
+                }
+                contador += 1;
+
+
+            }
+        }
+        encontrarComunes(X1, X2, A);
+        encontrarComunes(X1, X3, C);
+        encontrarComunes(X2, X4, G);
+        encontrarComunes(X3, X4, I);
+        encontrarNOComunes(X1, X2, X3, B);
+        encontrarNOComunes(X2, X1, X4, D);
+        encontrarNOComunes(X3, X1, X4, F);
+        encontrarNOComunes(X4, X2, X3, H);
+        cuadradoCentral(cuadradoTotal, X1, X2, X3, X4, E);
+        ordenInverso.invertirArray(B);
+        ordenInverso.invertirArray(D);
+        ordenInverso.invertirArray(F);
+        ordenInverso.invertirArray(H);
+
+
+        int[][] granCuadrado= {A,H,C,
+                                F,E,D,
+                                G,B,I};
+        int[][]cuadradoFinal= new int[tamano*tamano][];
+        for (int i=0; i<9; i++) {
+            cuadradoFinal[i] = new int[granCuadrado[i].length / 2];
+            for (int j = 0; j < granCuadrado[i].length/2; j++) {
+                cuadradoFinal[i][j] = granCuadrado[i][j];
+            }
+        }
+        int[][]cuadradoFinal2= new int[tamano*tamano][];
+        for (int i=0; i<9; i++) {
+            int v=granCuadrado[i].length/2;
+            cuadradoFinal2[i] = new int[granCuadrado[i].length / 2];
+            for (int j = 0; j < granCuadrado[i].length/2; j++) {
+                cuadradoFinal2[i][j] = granCuadrado[i][v];
+                v=v+1;
+            }
+        }
+        if (tamano==8){
+            System.out.print(Arrays.toString(cuadradoFinal[0]));
+            System.out.print("  "+Arrays.toString(cuadradoFinal[1]));
+            System.out.println("  "+Arrays.toString(cuadradoFinal[2]));
+            System.out.print(Arrays.toString(cuadradoFinal2[0]));
+            System.out.print(" "+Arrays.toString(cuadradoFinal2[1]));
+            System.out.println(Arrays.toString(cuadradoFinal2[2]));
+            System.out.print("["+cuadradoFinal[3][0]+", "+ cuadradoFinal[3][1]+"]");
+            System.out.print("["+cuadradoFinal[4][0]+", "+ cuadradoFinal[4][1] +", "+cuadradoFinal[4][2]+", "+ cuadradoFinal[4][3]+"]");
+            System.out.println("["+cuadradoFinal[5][0]+", "+ cuadradoFinal[5][1]+"]");
+            System.out.print("["+cuadradoFinal[3][2]+", "+ cuadradoFinal[3][3]+"]");
+            System.out.print("["+cuadradoFinal[4][4]+", "+ cuadradoFinal[4][5] +", "+cuadradoFinal[4][6]+", "+ cuadradoFinal[4][7]+"]");
+            System.out.println("["+cuadradoFinal[5][2]+", "+ cuadradoFinal[5][3]+"]");
+            System.out.print("["+cuadradoFinal2[3][0]+", "+ cuadradoFinal2[3][1]+"]");
+            System.out.print("["+cuadradoFinal2[4][0]+", "+ cuadradoFinal2[4][1] +", "+cuadradoFinal2[4][2]+", "+ cuadradoFinal2[4][3]+"]");
+            System.out.println("["+cuadradoFinal2[5][0]+", "+ cuadradoFinal2[5][1]+"]");
+            System.out.print("["+cuadradoFinal2[3][2]+", "+ cuadradoFinal2[3][3]+"]");
+            System.out.print("["+cuadradoFinal2[4][4]+", "+ cuadradoFinal2[4][5] +", "+cuadradoFinal2[4][6]+", "+ cuadradoFinal2[4][7]+"]");
+            System.out.println("["+cuadradoFinal2[5][2]+", "+ cuadradoFinal2[5][3]+"]");
+            System.out.print(Arrays.toString(cuadradoFinal[6]));
+            System.out.print(Arrays.toString(cuadradoFinal[7]));
+            System.out.println(Arrays.toString(cuadradoFinal[8]));
+            System.out.print(Arrays.toString(cuadradoFinal2[6]));
+            System.out.print("  "+Arrays.toString(cuadradoFinal2[7]));
+            System.out.println("  "+Arrays.toString(cuadradoFinal2[8]));
+
+        }
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+    public static int[] encontrarComunes(int[] array1, int[] array2, int[] arrayDestino) {
+        int cont = 0;
+        for (int i = 0; i < array1.length; i++) {
+            for (int j = 0; j < array2.length; j++) {
+                if (array1[i] == array2[j]) {
+                    arrayDestino[cont] = array1[i];
+                    cont = cont + 1;
+                }
+            }
+        }
+
+        return arrayDestino;
+    }
+
+    public static int[] encontrarNOComunes(int[] array1, int[] array2, int[] array3, int[] arrayDestino) {
+        int cont = 0;
+        for (int i = 0; i < array1.length; i++) {
+            boolean encontradoEnArray2 = false;
+            boolean encontradoEnArray3 = false;
+
+            for (int j = 0; j < array2.length; j++) {
+                if (array1[i] == array2[j]) {
+                    encontradoEnArray2 = true;
+                    break;
+                }
+            }
+
+            for (int j = 0; j < array3.length; j++) {
+                if (array1[i] == array3[j]) {
+                    encontradoEnArray3 = true;
+                    break;
+                }
+            }
+
+            if (!encontradoEnArray2 && !encontradoEnArray3) {
+                arrayDestino[cont] = array1[i];
+                cont++;
+            }
+        }
+        return(arrayDestino);
+    }
+    public static int[]cuadradoCentral(int[] total, int[] array1, int[] array2, int[] array3, int array4[], int[] arrayDestino){
+        int cont = 0;
+        for (int i = 0; i < total.length; i++) {
+            boolean encontradoEnArray2 = false;
+            boolean encontradoEnArray3 = false;
+            boolean encontradoEnArray1 = false;
+            boolean encontradoEnArray4 = false;
+
+            for (int j = 0; j < array2.length; j++) {
+                if (total[i] == array2[j]) {
+                    encontradoEnArray2 = true;
+                    break;
+                }
+            }
+
+            for (int j = 0; j < array3.length; j++) {
+                if (total[i] == array3[j]) {
+                    encontradoEnArray3 = true;
+                    break;
+                }
+            }
+            for (int j = 0; j < array2.length; j++) {
+                if (total[i] == array1[j]) {
+                    encontradoEnArray1 = true;
+                    break;
+                }
+            }
+            for (int j = 0; j < array2.length; j++) {
+                if (total[i] == array4[j]) {
+                    encontradoEnArray4 = true;
+                    break;
+                }
+            }
+
+            if (!encontradoEnArray2 && !encontradoEnArray3 && !encontradoEnArray4 && !encontradoEnArray1) {
+                arrayDestino[cont] = total[i];
+                cont++;
+            }
+        }
+        return arrayDestino;
+
+
+    }
+
+}
