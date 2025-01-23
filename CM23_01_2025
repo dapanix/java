@@ -1,3 +1,4 @@
+
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -63,39 +64,39 @@ public class CuadradoMagicoClase2 {
             }
         }//como dicen los metodos, aqui se encuentran los arrays comunes entre dos arrays X (las esquinas), y los no comunes, 
         //(las columnas entre esquinas), se entiende muy facil con una explicacion grafica
-        System.out.println(Arrays.toString(encontrarComunes(X1, X2, A)));
-        System.out.println(Arrays.toString(encontrarComunes(X1, X3, C)));
-        System.out.println(Arrays.toString(encontrarComunes(X2, X4, G)));
-        System.out.println(Arrays.toString(encontrarComunes(X3, X4, I)));
-        System.out.println(Arrays.toString(encontrarNOComunes(X1, X2, X3, B)));
-        System.out.println(Arrays.toString(encontrarNOComunes(X2, X1, X4, D)));
-        System.out.println(Arrays.toString(encontrarNOComunes(X3, X1, X4, F)));
-        System.out.println(Arrays.toString(encontrarNOComunes(X4, X2, X3, H)));
-        System.out.println(Arrays.toString(cuadradoCentral(cuadradoTotal, X1, X2, X3, X4, E)));
+        encontrarComunes(X1, X2, A);
+        encontrarComunes(X1, X3, C);
+        encontrarComunes(X2, X4, G);
+        encontrarComunes(X3, X4, I);
+        encontrarNOComunes(X1, X2, X3, B);
+        encontrarNOComunes(X2, X1, X4, D);
+        encontrarNOComunes(X3, X1, X4, F);
+        encontrarNOComunes(X4, X2, X3, H);
+        cuadradoCentral(cuadradoTotal, X1, X2, X3, X4, E);
         ordenInverso.invertirArray(B);
         ordenInverso.invertirArray(D);
         ordenInverso.invertirArray(F);
         ordenInverso.invertirArray(H);
 
 
-        int[][] granCuadrado=  {A, H, C,
+        int[][] granCuadrado=  {A, H, C,//array que contiene los arrays mas pequeños
                                 F, E, D,
                                 G, B, I};
+
+
+
+                      
+                                
         if (tamano==4){
-            for (int i = 0; i < granCuadrado.length; i++) {
-                for (int j = 0; j < granCuadrado[i].length; j++) {
-                    if (granCuadrado[i][j]==0){
-                        
-                    }else{
-                        System.out.print(" ["+granCuadrado[i][j]+"] ");
-                    }
-                    if (granCuadrado[i]== ||granCuadrado[i]==D){
-                        System.out.println();
-                    }
-                }
-            }
+            imprimirCuadrado4(A,B,C,D,E,F,G,H,I);
         }
-        else{
+
+
+
+
+        else if (tamano==8){//codigo que escribi inicialmente para dividir los arrays a la mitad y asi poder imprimirlos linea a linea, 
+            //esto era para un codigo que intente hacer para que los escribiera automaticamente, al final me rendi y hice para que se escribiera
+            //manualmente 
             int[][]cuadradoFinal= new int[tamano*tamano][];
             for (int i=0; i<9; i++) {
                 cuadradoFinal[i] = new int[granCuadrado[i].length / 2];
@@ -112,34 +113,8 @@ public class CuadradoMagicoClase2 {
                     v=v+1;
                 }
             }
-        
-            if (tamano==8){
-                System.out.print(Arrays.toString(cuadradoFinal[0]));
-                System.out.print("  "+Arrays.toString(cuadradoFinal[1]));
-                System.out.println("  "+Arrays.toString(cuadradoFinal[2]));
-                System.out.print(Arrays.toString(cuadradoFinal2[0]));
-                System.out.print(" "+Arrays.toString(cuadradoFinal2[1]));
-                System.out.println(Arrays.toString(cuadradoFinal2[2]));
-                System.out.print("["+cuadradoFinal[3][0]+", "+ cuadradoFinal[3][1]+"]");
-                System.out.print("["+cuadradoFinal[4][0]+", "+ cuadradoFinal[4][1] +", "+cuadradoFinal[4][2]+", "+ cuadradoFinal[4][3]+"]");
-                System.out.println("["+cuadradoFinal[5][0]+", "+ cuadradoFinal[5][1]+"]");
-                System.out.print("["+cuadradoFinal[3][2]+", "+ cuadradoFinal[3][3]+"]");
-                System.out.print("["+cuadradoFinal[4][4]+", "+ cuadradoFinal[4][5] +", "+cuadradoFinal[4][6]+", "+ cuadradoFinal[4][7]+"]");
-                System.out.println("["+cuadradoFinal[5][2]+", "+ cuadradoFinal[5][3]+"]");
-                System.out.print("["+cuadradoFinal2[3][0]+", "+ cuadradoFinal2[3][1]+"]");
-                System.out.print("["+cuadradoFinal2[4][0]+", "+ cuadradoFinal2[4][1] +", "+cuadradoFinal2[4][2]+", "+ cuadradoFinal2[4][3]+"]");
-                System.out.println("["+cuadradoFinal2[5][0]+", "+ cuadradoFinal2[5][1]+"]");
-                System.out.print("["+cuadradoFinal2[3][2]+", "+ cuadradoFinal2[3][3]+"]");
-                System.out.print("["+cuadradoFinal2[4][4]+", "+ cuadradoFinal2[4][5] +", "+cuadradoFinal2[4][6]+", "+ cuadradoFinal2[4][7]+"]");
-                System.out.println("["+cuadradoFinal2[5][2]+", "+ cuadradoFinal2[5][3]+"]");
-                System.out.print(Arrays.toString(cuadradoFinal[6]));
-                System.out.print(Arrays.toString(cuadradoFinal[7]));
-                System.out.println(Arrays.toString(cuadradoFinal[8]));
-                System.out.print(Arrays.toString(cuadradoFinal2[6]));
-                System.out.print("  "+Arrays.toString(cuadradoFinal2[7]));
-                System.out.println("  "+Arrays.toString(cuadradoFinal2[8]));
-
-            }
+         imprimirrCuadrado8(cuadradoFinal,cuadradoFinal2);
+            
         }
 
 
@@ -231,6 +206,53 @@ public class CuadradoMagicoClase2 {
             }
         }
         return arrayDestino;
+
+
+    }
+    private static void imprimirCuadrado4(int[]A,int[]B,int[]C,int[]D,int[]E,int[]F,int[]G,int[]H,int[]I){
+        System.out.print(A[0]+ " ");
+            System.out.print(H[2]+ " ");
+            System.out.print(H[3]+ " ");
+            System.out.println(C[0]+ " ");
+            System.out.print(F[0]+ " ");
+            System.out.print(E[0 ]+ " ");
+            System.out.print(E[1]+ " ");
+            System.out.print(D[0]+ " ");
+            System.out.println(D[1]+ " ");
+            System.out.print(F[1]+ " ");
+            System.out.print(E[2]+ " ");
+            System.out.print(E[3]+ " ");
+            System.out.println(D[2]+ " ");
+            System.out.print(G[0]+ " ");
+            System.out.print(B[2]+ " ");
+            System.out.print(B[3]+ " ");
+            System.out.print(I[0]+ " ");
+    }
+    private static void imprimirrCuadrado8(int[][]cuadradoFinal, int[][]cuadradoFinal2){
+        System.out.print(Arrays.toString(cuadradoFinal[0]));
+        System.out.print("  "+Arrays.toString(cuadradoFinal[1]));
+        System.out.println("  "+Arrays.toString(cuadradoFinal[2]));
+        System.out.print(Arrays.toString(cuadradoFinal2[0]));
+        System.out.print(" "+Arrays.toString(cuadradoFinal2[1]));
+        System.out.println(Arrays.toString(cuadradoFinal2[2]));
+        System.out.print("["+cuadradoFinal[3][0]+", "+ cuadradoFinal[3][1]+"]");
+        System.out.print("["+cuadradoFinal[4][0]+", "+ cuadradoFinal[4][1] +", "+cuadradoFinal[4][2]+", "+ cuadradoFinal[4][3]+"]");
+        System.out.println("["+cuadradoFinal[5][0]+", "+ cuadradoFinal[5][1]+"]");
+        System.out.print("["+cuadradoFinal[3][2]+", "+ cuadradoFinal[3][3]+"]");
+        System.out.print("["+cuadradoFinal[4][4]+", "+ cuadradoFinal[4][5] +", "+cuadradoFinal[4][6]+", "+ cuadradoFinal[4][7]+"]");
+        System.out.println("["+cuadradoFinal[5][2]+", "+ cuadradoFinal[5][3]+"]");
+        System.out.print("["+cuadradoFinal2[3][0]+", "+ cuadradoFinal2[3][1]+"]");
+        System.out.print("["+cuadradoFinal2[4][0]+", "+ cuadradoFinal2[4][1] +", "+cuadradoFinal2[4][2]+", "+ cuadradoFinal2[4][3]+"]");
+        System.out.println("["+cuadradoFinal2[5][0]+", "+ cuadradoFinal2[5][1]+"]");
+        System.out.print("["+cuadradoFinal2[3][2]+", "+ cuadradoFinal2[3][3]+"]");
+        System.out.print("["+cuadradoFinal2[4][4]+", "+ cuadradoFinal2[4][5] +", "+cuadradoFinal2[4][6]+", "+ cuadradoFinal2[4][7]+"]");
+        System.out.println("["+cuadradoFinal2[5][2]+", "+ cuadradoFinal2[5][3]+"]");
+        System.out.print(Arrays.toString(cuadradoFinal[6]));
+        System.out.print(Arrays.toString(cuadradoFinal[7]));
+        System.out.println(Arrays.toString(cuadradoFinal[8]));
+        System.out.print(Arrays.toString(cuadradoFinal2[6]));
+        System.out.print("  "+Arrays.toString(cuadradoFinal2[7]));
+        System.out.println("  "+Arrays.toString(cuadradoFinal2[8]));
 
 
     }
