@@ -1,3 +1,305 @@
+package EjsInicio.NuevosEjs;
+import java.lang.Math;
+import java.lang.reflect.Array;
+import java.sql.SQLOutput;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class CuadradoMagicoClase {
+    public static void main(String[] args) {
+        int z;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("tamaño del cuadrado (debe ser multiplo de 4): ");
+        int tamano = sc.nextInt();
+        int elevado = 0;
+        if (tamano != 4) {
+            elevado = tamano / 4;
+        }
+        if (tamano % 4 != 0) {
+            System.out.println("el tamaño debe ser multiplo de 4 (4,8,16...) ");
+            System.exit(0);
+        }
+        int[] cuadradoTotal = new int[tamano * tamano];
+        int[] X1 = new int[tamano * (tamano / 4)];
+        int[] X2 = new int[tamano * (tamano / 4)];
+        int[] X3 = new int[tamano * (tamano / 4)];
+        int[] X4 = new int[tamano * (tamano / 4)];
+        int[] A = new int[(int) Math.pow(2, elevado)];
+        int[] B = new int[((int) Math.pow(2, elevado)) * 2];
+        int[] C = new int[(int) Math.pow(2, elevado)];
+        int[] D = new int[((int) Math.pow(2, elevado)) * 2];
+        int[] E = new int[(tamano * tamano) / 4];
+        int[] F = new int[((int) Math.pow(2, elevado)) * 2];
+        int[] G = new int[(int) Math.pow(2, elevado)];
+        int[] H = new int[((int) Math.pow(2, elevado)) * 2];
+        int[] I = new int[(int) Math.pow(2, elevado)];
+        int[][] Cuadradoarrays = {X1, X2, X3, X4};
+        for (int i = 0; i < tamano * tamano; i++) {
+            cuadradoTotal[i] = i + 1;
+        }
+
+        for (int i = 0; i < 4; i++) {// aqui se asignan los valores a los arrays x1 x2 x3 x4
+            int contador = 0;
+            for (int j = 0; j < tamano * (tamano / 4); j++) {
+                if (i == 2 && j == 0) {
+                    contador = contador + tamano - (tamano / 4);
+                }
+                if (i != 3) {
+                    z = 0;
+                } else {
+                    z = tamano * tamano - tamano * (tamano / 4);
+                }
+
+
+                if (i == 1 || i == 2) {
+                    Cuadradoarrays[i][j] = cuadradoTotal[contador];
+                    if ((j + 1) % (tamano / 4) == 0) {
+                        contador += tamano - (tamano / 4);
+                    }
+                } else {
+                    Cuadradoarrays[i][j] = cuadradoTotal[j + z];
+                }
+                contador += 1;
+
+            }
+        }//como dicen los metodos, aqui se encuentran los arrays comunes entre dos arrays X (las esquinas), y los no comunes,
+        //(las columnas entre esquinas), se entiende muy facil con una explicacion grafica
+        encontrarComunes(X1, X2, A);
+        encontrarComunes(X1, X3, C);
+        encontrarComunes(X2, X4, G);
+        encontrarComunes(X3, X4, I);
+        encontrarNOComunes(X1, X2, X3, B);
+        encontrarNOComunes(X2, X1, X4, D);
+        encontrarNOComunes(X3, X1, X4, F);
+        encontrarNOComunes(X4, X2, X3, H);
+        cuadradoCentral(cuadradoTotal, X1, X2, X3, X4, E);
+        ordenInverso.invertirArray(B);
+        ordenInverso.invertirArray(D);
+        ordenInverso.invertirArray(F);
+        ordenInverso.invertirArray(H);
+
+
+        int[][] granCuadrado = {A, H, C,//array que contiene los arrays mas pequeños
+                F, E, D,
+                G, B, I};
+
+
+        if (tamano == 4) {
+            imprimirCuadrado4(A, B, C, D, E, F, G, H, I);
+        } else if (tamano == 8) {//codigo que escribi inicialmente para dividir los arrays a la mitad y asi poder imprimirlos linea a linea,
+            //esto era para un codigo que intente hacer para que los escribiera automaticamente, al final me rendi y hice para que se escribiera
+            //manualmente
+            int[][] cuadradoFinal = new int[tamano * tamano][];
+            for (int i = 0; i < 9; i++) {
+                cuadradoFinal[i] = new int[granCuadrado[i].length / 2];
+                for (int j = 0; j < granCuadrado[i].length / 2; j++) {
+                    cuadradoFinal[i][j] = granCuadrado[i][j];
+                }
+            }
+            int[][] cuadradoFinal2 = new int[tamano * tamano][];
+            for (int i = 0; i < 9; i++) {
+                int v = granCuadrado[i].length / 2;
+                cuadradoFinal2[i] = new int[granCuadrado[i].length / 2];
+                for (int j = 0; j < granCuadrado[i].length / 2; j++) {
+                    cuadradoFinal2[i][j] = granCuadrado[i][v];
+                    v = v + 1;
+                }
+            }
+            imprimirrCuadrado8(cuadradoFinal, cuadradoFinal2);
+
+        }
+        if (tamano == 16) {
+            imprimirCuadrado16(A, B, C, D, E, F, G, H, I, granCuadrado);
+        }
+    }
+
+    public static int[] encontrarComunes(int[] array1, int[] array2, int[] arrayDestino) {
+        int cont = 0;
+        for (int i = 0; i < array1.length; i++) {
+            for (int j = 0; j < array2.length; j++) {
+                if (array1[i] == array2[j]) {
+                    arrayDestino[cont] = array1[i];
+                    cont = cont + 1;
+                }
+            }
+        }
+
+        return arrayDestino;
+    }
+
+    public static int[] encontrarNOComunes(int[] array1, int[] array2, int[] array3, int[] arrayDestino) {
+        int cont = 0;
+        for (int i = 0; i < array1.length; i++) {
+            boolean encontradoEnArray2 = false;
+            boolean encontradoEnArray3 = false;
+
+            for (int j = 0; j < array2.length; j++) {
+                if (array1[i] == array2[j]) {
+                    encontradoEnArray2 = true;
+                    break;
+                }
+            }
+
+            for (int j = 0; j < array3.length; j++) {
+                if (array1[i] == array3[j]) {
+                    encontradoEnArray3 = true;
+                    break;
+                }
+            }
+
+            if (!encontradoEnArray2 && !encontradoEnArray3) {
+                arrayDestino[cont] = array1[i];
+                cont++;
+            }
+        }
+        return (arrayDestino);
+    }
+
+    public static int[] cuadradoCentral(int[] total, int[] array1, int[] array2, int[] array3, int array4[], int[] arrayDestino) {
+        int cont = 0;
+        for (int i = 0; i < total.length; i++) {
+            boolean encontradoEnArray2 = false;
+            boolean encontradoEnArray3 = false;
+            boolean encontradoEnArray1 = false;
+            boolean encontradoEnArray4 = false;
+
+            for (int j = 0; j < array2.length; j++) {
+                if (total[i] == array2[j]) {
+                    encontradoEnArray2 = true;
+                    break;
+                }
+            }
+
+            for (int j = 0; j < array3.length; j++) {
+                if (total[i] == array3[j]) {
+                    encontradoEnArray3 = true;
+                    break;
+                }
+            }
+            for (int j = 0; j < array2.length; j++) {
+                if (total[i] == array1[j]) {
+                    encontradoEnArray1 = true;
+                    break;
+                }
+            }
+            for (int j = 0; j < array2.length; j++) {
+                if (total[i] == array4[j]) {
+                    encontradoEnArray4 = true;
+                    break;
+                }
+            }
+
+            if (!encontradoEnArray2 && !encontradoEnArray3 && !encontradoEnArray4 && !encontradoEnArray1) {
+                arrayDestino[cont] = total[i];
+                cont++;
+            }
+        }
+        return arrayDestino;
+
+
+    }
+
+    private static void imprimirCuadrado4(int[] A, int[] B, int[] C, int[] D, int[] E, int[] F, int[] G, int[] H, int[] I) {
+        System.out.print(A[0] + " ");
+        System.out.print(H[0] + " ");
+        System.out.print(H[1] + " ");
+        System.out.println(C[0] + " ");
+        System.out.print(F[0] + " ");
+        System.out.print(E[0] + " ");
+        System.out.print(E[1] + " ");
+        System.out.print(D[0] + " ");
+        System.out.println(D[1] + " ");
+        System.out.print(F[1] + " ");
+        System.out.print(E[2] + " ");
+        System.out.print(E[3] + " ");
+        System.out.println(D[1] + " ");
+        System.out.print(G[0] + " ");
+        System.out.print(B[0] + " ");
+        System.out.print(B[1] + " ");
+        System.out.print(I[0] + " ");
+    }
+
+    private static void imprimirrCuadrado8(int[][] cuadradoFinal, int[][] cuadradoFinal2) {
+        System.out.print(Arrays.toString(cuadradoFinal[0]));
+        System.out.print("  " + Arrays.toString(cuadradoFinal[1]));
+        System.out.println("  " + Arrays.toString(cuadradoFinal[2]));
+        System.out.print(Arrays.toString(cuadradoFinal2[0]));
+        System.out.print(" " + Arrays.toString(cuadradoFinal2[1]));
+        System.out.println(Arrays.toString(cuadradoFinal2[2]));
+        System.out.print("[" + cuadradoFinal[3][0] + ", " + cuadradoFinal[3][1] + "]");
+        System.out.print("[" + cuadradoFinal[4][0] + ", " + cuadradoFinal[4][1] + ", " + cuadradoFinal[4][2] + ", " + cuadradoFinal[4][3] + "]");
+        System.out.println("[" + cuadradoFinal[5][0] + ", " + cuadradoFinal[5][1] + "]");
+        System.out.print("[" + cuadradoFinal[3][2] + ", " + cuadradoFinal[3][3] + "]");
+        System.out.print("[" + cuadradoFinal[4][4] + ", " + cuadradoFinal[4][5] + ", " + cuadradoFinal[4][6] + ", " + cuadradoFinal[4][7] + "]");
+        System.out.println("[" + cuadradoFinal[5][2] + ", " + cuadradoFinal[5][3] + "]");
+        System.out.print("[" + cuadradoFinal2[3][0] + ", " + cuadradoFinal2[3][1] + "]");
+        System.out.print("[" + cuadradoFinal2[4][0] + ", " + cuadradoFinal2[4][1] + ", " + cuadradoFinal2[4][2] + ", " + cuadradoFinal2[4][3] + "]");
+        System.out.println("[" + cuadradoFinal2[5][0] + ", " + cuadradoFinal2[5][1] + "]");
+        System.out.print("[" + cuadradoFinal2[3][2] + ", " + cuadradoFinal2[3][3] + "]");
+        System.out.print("[" + cuadradoFinal2[4][4] + ", " + cuadradoFinal2[4][5] + ", " + cuadradoFinal2[4][6] + ", " + cuadradoFinal2[4][7] + "]");
+        System.out.println("[" + cuadradoFinal2[5][2] + ", " + cuadradoFinal2[5][3] + "]");
+        System.out.print(Arrays.toString(cuadradoFinal[6]));
+        System.out.print(Arrays.toString(cuadradoFinal[7]));
+        System.out.println(Arrays.toString(cuadradoFinal[8]));
+        System.out.print(Arrays.toString(cuadradoFinal2[6]));
+        System.out.print("  " + Arrays.toString(cuadradoFinal2[7]));
+        System.out.println("  " + Arrays.toString(cuadradoFinal2[8]));
+
+
+    }
+
+    private static void imprimirCuadrado16(int[] A, int[] B, int[] C, int[] D, int[] E, int[] F, int[] G, int[] H, int[] I, int[][] granCuadrado) {
+        for (int x = 0; x < 4; x++) {
+
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < granCuadrado[i].length / 4; j++) {
+
+                    System.out.print(granCuadrado[i][j + (granCuadrado[i].length / 4 * x)] + " ");
+                    if (i == 2 && granCuadrado[i][j] % 4 == 0) {
+                        System.out.println();
+                    }
+                }
+
+            }
+
+        }
+        for (int x = 0; x < 8; x++) {
+            for (int i = 3; i <= 5; i++) {
+                if (i == 3 || i == 5) {
+                    for (int j = 0; j < granCuadrado[i].length / 8; j++) {
+
+                        System.out.print(granCuadrado[i][j + (granCuadrado[i].length / 8 * x)] + " ");
+                        if (i == 5 && (j + 1) % 4 == 0 && j != 0) {
+                            System.out.println();
+                        }
+                    }
+                }
+                if (i == 4) {
+                    for (int j = 0; j < granCuadrado[4].length / 8; j++) {
+
+                        System.out.print(granCuadrado[i][j + (granCuadrado[i].length / 8 * x)] + " ");
+
+                    }
+                }
+
+            }
+        }
+        for (int x = 0; x < 4; x++) {
+
+            for (int i = 6; i <=8; i++) {
+                for (int j = 0; j < granCuadrado[i].length / 4; j++) {
+
+                    System.out.print(granCuadrado[i][j + (granCuadrado[i].length / 4 * x)] + " ");
+                    if (i == 8 && granCuadrado[i][j] % 4 == 0) {
+                        System.out.println();
+                    }
+                }
+
+            }
+
+        }
+    }
+}
 
 import java.util.Arrays;
 import java.util.Scanner;
