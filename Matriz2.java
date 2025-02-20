@@ -124,20 +124,30 @@ public class Matriz2 {
             }
 
     }
-    public int[][] dameSubMatriz(int x1, int y1, int x2, int y2){
-        int[][]m1=new int[y2-y1][x2-x1];
-        for (int i = y1; i < y2; i++) {
-            for (int j = x1; j < x2; j++) {
-                m1[i][j]=matriz[i][j];
+    public int[][] dameSubMatriz(int x1, int y1, int x2, int y2) {
+        int filas = Math.abs(y2 - y1) + 1;
+        int columnas = Math.abs(x2 - x1) + 1;
+
+        int[][] subMatriz = new int[filas][columnas];
+
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                subMatriz[i][j] = matriz[y1 + i][x1 + j]; // Ajustamos índices
             }
         }
-        return m1;
+
+        return subMatriz;
     }
+    int conti=0;
+    int contj=0;
     public void colocaSubMatriz(int x1, int y1, int[][] m1){
         for (int i = y1; i < m1.length; i++) {
+            y1++;
             for (int j = x1; j < m1[i].length; j++) {
-                matriz[i][j]=m1[i][j];
+                matriz[x1][y1]=m1[i][j];
+                x1++;
             }
+            x1=0;
         }
     }
 }
